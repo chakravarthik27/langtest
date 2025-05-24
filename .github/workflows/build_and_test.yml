@@ -48,6 +48,4 @@ jobs:
 
       - name: Test with pytest
         run: |
-          uv run task force-cpu-torch
-          uv run task extra-lib
           uv run task test
