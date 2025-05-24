@@ -85,7 +85,7 @@ class StereoTypeTestFactory(ITests):
         sample_list: Union[Dict[str, List[Sample]], List[Sample]],
         model: ModelAPI,
         *args,
-        **kwargs
+        **kwargs,
     ):
         """Runs the crows-pairs or wino-bias tests
 
