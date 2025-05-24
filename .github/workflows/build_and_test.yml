@@ -3,13 +3,12 @@ name: build
 on:
   push:
     branches:
-      - "main"
-
+      - main
   pull_request:
     branches:
-      - "release/*"
-      - "patch/*"
-      - "main"
+      - release/*
+      - patch/*
+      - main
 
 jobs:
   build:
@@ -17,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ "3.9","3.10", "3.11" ]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
 
     steps:
       - name: Free up disk space at start
@@ -27,40 +26,28 @@ jobs:
           df -h
 
       - uses: actions/checkout@v3
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
 
-      - uses: snok/install-poetry@v1
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
         with:
-          version: 1.3.1
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-          installer-parallel: true
+          enable-cache: true
 
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v3
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-
-      - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: |
-          poetry install --with dev --all-extras
+      - name: Install project dependencies
+        run: uv sync --locked --all-extras --dev
 
       - name: Check linting
-        run: |
-          poetry run task lint
+        run: uv run task lint
 
       - name: Check formatting
-        run: |
-          poetry run task is-formatted
+        run: uv run task is-formatted
 
       - name: Test with pytest
         run: |
-          poetry run task force-cpu-torch
-          poetry run task extra-lib
-          poetry run task test
+          uv run task force-cpu-torch
+          uv run task extra-lib
+          uv run task test
