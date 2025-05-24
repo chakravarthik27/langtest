@@ -1,25 +1,11 @@
-[tool.poetry]
+[project]
 name = "langtest"
 version = "2.6.0"
 description = "John Snow Labs provides a library for delivering safe & effective NLP models."
-authors = ["John Snow Labs <support@johnsnowlabs.com>"]
+authors = [{ name = "John Snow Labs", email = "support@johnsnowlabs.com" }]
+requires-python = ">=3.10,<4.0"
 readme = "README.md"
-classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Developers",
-    "Topic :: Software Development :: Build Tools",
-    "License :: OSI Approved :: Apache Software License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-]
 license = "Apache-2.0"
-homepage = "https://www.langtest.org"
-repository = "https://github.com/JohnSnowLabs/langtest/"
-documentation = "https://langtest.org/docs/pages/docs/install"
 keywords = [
     "LLM",
     "NLP",
@@ -35,8 +21,112 @@ keywords = [
     "machine learning",
     "data science",
 ]
-exclude = [
-    "tests/"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "pydantic==2.9.2",
+    "nest-asyncio>=1.5.0,<2",
+    "jsonlines>=3.1.0",
+    "pandas>=2.0.3,<3",
+    "pyyaml~=6.0",
+    "tqdm>=4.67.1,<5",
+    "tenacity>=8.2.2,<9",
+    "typing-extensions>=4.10.0,<5",
+    "boto3>=1.34.93,<2",
+    "importlib-resources>=6.4.0,<7",
+    "click>=8.1.7",
+    "openpyxl>=3.1.5",
+    "tables>=3.8.0",
+    "pillow>=11.0.0",
+]
+
+[project.optional-dependencies]
+transformers = [
+    "transformers>=4.44.2,<5",
+    "torch>=2.0.0,<3",
+    "accelerate==0.34.2",
+    "datasets>=2.14.0",
+]
+evaluate = [
+    "evaluate>=0.4.0,<0.5",
+    "rouge-score>=0.1.2,<0.2",
+    "seqeval>=1.2.0,<2",
+]
+spacy = ["spacy>=3.0.0"]
+johnsnowlabs = ["johnsnowlabs==5.5.0"]
+openai = [
+    "openai>=1.61.1,<2",
+    "langchain>=0.3.15,<0.4",
+    "langchain-openai>=0.3.7,<0.4",
+    "langchain-community==0.3.5",
+]
+cohere = [
+    "cohere>=4.57.0,<5",
+    "langchain>=0.3.15,<0.4",
+    "langchain-community==0.3.5",
+]
+ai21 = [
+    "ai21>=1.1.0,<2",
+    "langchain>=0.3.15,<0.4",
+    "langchain-community==0.3.5",
+]
+huggingface_hub = [
+    "huggingface_hub>0.16.0",
+    "langchain>=0.3.15,<0.4",
+]
+metaflow = ["metaflow>=2.9.0"]
+mlflow = ["mlflow>=2.19.0,<3"]
+datasets = ["datasets>=2.14.0"]
+matplotlib = ["matplotlib>=3.7.2,<4"]
+databricks = [
+    "langchain>=0.3.15,<0.4",
+    "langchain-databricks==0.1.1",
+    "langchain-community==0.3.5",
+    "langchain-openai>=0.3.7,<0.4",
+]
+llms = [
+    "langchain>=0.3.15,<0.4",
+    "langchain-community==0.3.5",
+    "langchain-openai>=0.3.7,<0.4",
+    "langchain-databricks==0.1.1",
+    "langchain-ollama>=0.2.2,<0.3",
+]
+ollama_sdk = [
+    "langchain>=0.3.15,<0.4",
+    "langchain-community==0.3.5",
+    "ollama>=0.4.7,<0.5",
+]
+
+[project.urls]
+Homepage = "https://www.langtest.org"
+Repository = "https://github.com/JohnSnowLabs/langtest/"
+Documentation = "https://langtest.org/docs/pages/docs/install"
+
+[project.scripts]
+langtest = "langtest.__main__:cli"
+
+[dependency-groups]
+dev = [
+    "ipdb>=0.13.13,<0.14",
+    "pytest>=7.4.0,<8",
+    "taskipy>=1.11.0,<2",
+    "en-core-web-sm",
+    "black>=24.10.0,<25",
+    "pyproject-flake8<6.0.0",
+    "pre-commit>=3.3.3,<4",
+    "pydocstyle>=6.3.0,<7",
+    "ipykernel>=6.29.5,<7",
+    "pytest-cov>=6.0.0,<7",
 ]
 
 [tool.flake8]
@@ -44,78 +134,25 @@ max-line-length = 90
 ignore = "E203,E501,W503"
 per-file-ignores = '__init__.py:F401'
 
+[tool.uv]
+
+[tool.uv.sources]
+en-core-web-sm = { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0.tar.gz" }
+
 [tool.black]
 line-length = 90
 extend-exclude = "langtest/transform/constants.py"
 exclude = 'langtest/errors.py'
 
-[tool.poetry.dependencies]
-python = ">=3.9,<4.0"
-pydantic = "2.9.2"
-johnsnowlabs = {version = "5.5.0", optional = true}
-rouge-score = { version = "^0.1.2", optional = true }
-evaluate = { version = "^0.4.0", optional = true }
-transformers = "^4.44.2"
-huggingface_hub = { version = ">0.16.0", optional = true}
-spacy = { version = ">=3.0.0", optional = true }
-nest-asyncio = "^1.5.0"
-openai = "^1.61.1"
-jsonlines = ">=3.1.0"
-torch = { version = "^2.0.0", optional = true }
-pandas = "^2.0.3"
-pyyaml = "^6.0"
-tqdm = "^4.67.1"
-cohere = { version = "^4.10.0", optional = true}
-ai21 = {version = "^1.1.0", optional = true}
-metaflow = {version = ">=2.9.0", optional = true}
-accelerate = {version = "0.34.2", optional = true}
-seqeval = {version = "^1.2.0", optional = true}
-mlflow = {version = "^2.19.0", optional = true}
-datasets = {version = ">=2.14.0", optional = true}
-matplotlib = {version = "^3.7.2", optional = true}
-tenacity = {version = "^8.2.2", optional = true}
-langchain = {version = "^0.3.15", optional = true}
-typing-extensions = "^4.10.0"
-langchain-openai = {version = "^0.3.7", optional = true}
-boto3 = {version = "^1.34.93", optional = true}
-importlib-resources = "^6.4.0"
-click = ">=8.1.7"
-openpyxl = ">=3.1.5"
-tables = ">=3.8.0"
-pillow = ">=11.0.0"
-langchain-databricks = {version = "0.1.1", optional = true}
-langchain-community = {version = "0.3.5", optional = true}
-langchain-ollama = {version = "^0.2.2", optional = true}
-ollama = {version = "^0.4.7", optional = true}
+[tool.hatch.build.targets.sdist]
+exclude = ["tests/"]
 
-[tool.poetry.extras]
-transformers = ["transformers", "torch", "accelerate", "datasets"]
-evaluate = ["evaluate", "rouge-score", "seqeval"]
-spacy = ["spacy"]
-johnsnowlabs = ["johnsnowlabs"]
-openai = ["openai", "langchain", "langchain-openai", "langchain-community"]
-cohere = ["cohere", "langchain", "langchain-community"]
-ai21 = ["ai21", "langchain", "langchain-community"]
-huggingface_hub = ["huggingface_hub", "langchain"]
-metaflow = ["metaflow"]
-mlflow = ["mlflow"]
-datasets = ["datasets"]
-matplotlib = ["matplotlib"]
-databricks = ["langchain", "langchain-databricks", "langchain-community", "langchain-openai"]
-llms = ["langchain", "langchain-community", "langchain-openai", "langchain-databricks", "langchain-ollama"]
-ollama_sdk = ["langchain", "langchain-community", "ollama"]
+[tool.hatch.build.targets.wheel]
+exclude = ["tests/"]
 
-[tool.poetry.group.dev.dependencies]
-ipdb = "^0.13.13"
-pytest = "^7.4.0"
-taskipy = "^1.11.0"
-en-core-web-sm = { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0.tar.gz" }
-black = "^24.10.0"
-pyproject-flake8 = "<6.0.0"
-pre-commit = "^3.3.3"
-pydocstyle = "^6.3.0"
-ipykernel = "^6.29.5"
-pytest-cov = "^6.0.0"
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.taskipy.tasks]
 test = "pytest tests/* -v --disable-warnings"
@@ -125,11 +162,3 @@ check-docstrings = "pydocstyle langtest/ --add-select=D417 --add-ignore=D100,D10
 is-formatted = "black --check langtest/ tests/"
 force-cpu-torch = "python -m pip install torch --index-url https://download.pytorch.org/whl/cpu"
 extra-lib = "python -m pip install openpyxl tables"
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-langtest = "langtest.__main__:cli"
